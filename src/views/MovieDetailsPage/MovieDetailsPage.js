@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {
+  useParams,
+  NavLink,
+  useRouteMatch,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import * as apiService from '../../services/films-api';
+import s from '../../Components/Navigation/Navigation.module.css';
+import Cast from '../Cast/Cast';
+import Reviews from '../Reviews/Reviews';
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
-
+  const { url } = useRouteMatch();
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
@@ -41,8 +50,31 @@ export default function MovieDetailsPage() {
                   <li key={genre.id}>{genre.name}</li>
                 ))}
               </ul>
+              <NavLink
+                to={`${url}/cast`}
+                className={s.link}
+                activeClassName={s.activeLink}
+              >
+                Cast
+              </NavLink>
+              <NavLink
+                to={`${url}/reviews`}
+                className={s.link}
+                activeClassName={s.activeLink}
+              >
+                Reviews
+              </NavLink>
             </div>
           </div>
+          <Switch>
+            <Route path="/movies/:movieId/cast">
+              <Cast />
+            </Route>
+
+            <Route path="/movies/:movieId/reviews">
+              <Reviews />
+            </Route>
+          </Switch>
         </>
       )}
     </>
