@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import * as apiService from '../../services/films-api';
+import s from './HomePage.module.css';
 
 export default function HomePage() {
   const { url } = useRouteMatch();
@@ -25,11 +26,22 @@ export default function HomePage() {
 
   return (
     <>
-      <ul>
+      <ul className={s.movieGallery}>
         {movies &&
           movies.map(movie => (
-            <li key={movie.id}>
-              <Link to={`${url}movies/${movie.id}`}>{movie.title}</Link>
+            <li key={movie.id} className={s.movieGalleryItem}>
+              <Link to={`${url}movies/${movie.id}`}>
+                <img
+                  className={s.movieGalleryItemImage}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : 'noImageFound'
+                  }
+                  alt={movie.title}
+                />
+                <p>{movie.title}</p>
+              </Link>
             </li>
           ))}
       </ul>
