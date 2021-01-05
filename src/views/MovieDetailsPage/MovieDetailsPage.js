@@ -13,9 +13,8 @@ import Reviews from '../Reviews/Reviews';
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
   const [movie, setMovie] = useState(null);
-
   useEffect(() => {
     apiService
       .getFullFilmInfo(movieId)
@@ -67,11 +66,11 @@ export default function MovieDetailsPage() {
             </div>
           </div>
           <Switch>
-            <Route path="/movies/:movieId/cast">
+            <Route path={`${path}/cast`}>
               <Cast />
             </Route>
 
-            <Route path="/movies/:movieId/reviews">
+            <Route path={`${path}/reviews`}>
               <Reviews />
             </Route>
           </Switch>
