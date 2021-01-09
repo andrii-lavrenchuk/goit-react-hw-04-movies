@@ -21,20 +21,26 @@
  * Стили компонента SearchForm
  */
 .searchForm {
-  display: flex;
+  /* display: flex;
   align-items: center;
   width: 100%;
   max-width: 600px;
   background-color: #fff;
   border-radius: 3px;
-  overflow: hidden;
+  overflow: hidden; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
 .searchFormButton {
+  margin-right: 10px;
   display: inline-block;
-  width: 48px;
-  height: 48px;
+  width: 45px;
+  height: 45px;
   border: 0;
+  border-radius: 25px;
   background-image: url('https://image.flaticon.com/icons/svg/149/149852.svg');
   background-size: 40%;
   background-repeat: no-repeat;
@@ -62,14 +68,21 @@
 }
 
 .searchFormInput {
-  display: inline-block;
+  /* display: inline-block;
   width: 100%;
   font: inherit;
   font-size: 20px;
   border: none;
   outline: none;
   padding-left: 4px;
-  padding-right: 4px;
+  padding-right: 4px; */
+  width: 250px;
+  height: 45px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(33, 33, 33, 0.2);
+  cursor: pointer;
+  font-size: 15px;
 }
 
 .searchFormInput::placeholder {
