@@ -25,7 +25,6 @@ export default function Searchbar({ onSubmit }) {
   };
 
   return (
-    // <header className={s.searchbar}>
     <form className={s.searchForm} onSubmit={handleSubmit}>
       <button type="submit" className={s.searchFormButton}>
         <span className={s.searchFormButtonLabel}>Search</span>
@@ -41,7 +40,6 @@ export default function Searchbar({ onSubmit }) {
         onChange={handleNameChange}
       />
     </form>
-    // </header>
   );
 }
 
