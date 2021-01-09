@@ -9,7 +9,7 @@ import MovieDetailsPage from './views/MovieDetailsPage/MovieDetailsPage';
 export default function App() {
   return (
     <div>
-      <ToastContainer autoclose={3000} />
+      <ToastContainer autoClose={2000} />
       <AppBar />
 
       <Switch>
