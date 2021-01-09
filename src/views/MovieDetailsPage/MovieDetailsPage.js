@@ -6,36 +6,56 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-// import errorImg from './error.jpg';
+import notFoundImg from '../../img/notFound.png';
 import * as apiService from '../../services/films-api';
-// import s from '../../Components/Navigation/Navigation.module.css';
 import s from './MovieDetailsPage.module.css';
 import Cast from '../Cast/Cast';
 import Reviews from '../Reviews/Reviews';
+import ErrorView from '../../Components/ErrorView/ErrorView';
+import Loader from '../../Components/Loader/Loader';
+
+const Status = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
   const [movie, setMovie] = useState(null);
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(Status.IDLE);
+
   useEffect(() => {
+    setStatus(Status.PENDING);
+
     apiService
       .getFullFilmInfo(movieId)
       .then(({ poster_path, original_title, popularity, overview, genres }) => {
         setMovie({
           src: poster_path
             ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-            : `{noImageFound}`,
+            : notFoundImg,
           title: original_title,
           score: popularity.toFixed(1),
           overview,
           genres,
         });
+        setStatus(Status.RESOLVED);
+      })
+      .catch(error => {
+        setError(error.message);
+        setStatus(Status.REJECTED);
       });
   }, [movieId]);
 
   return (
     <>
-      {movie && (
+      {status === Status.PENDING && <Loader />}
+      {status === Status.REJECTED && <ErrorView message={error} />}
+      {status === Status.RESOLVED && (
         <>
           <div className={s.wrapper}>
             <img className={s.poster} src={movie.src} alt={movie.title} />
