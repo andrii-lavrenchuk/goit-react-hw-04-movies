@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
+// import errorImg from './error.jpg';
+import s from './Cast.module.css';
 import * as apiService from '../../services/films-api';
 
 export default function Cast() {
@@ -16,11 +17,12 @@ export default function Cast() {
   return (
     // <p>Cast</p>
 
-    <ul>
+    <ul className={s.cast}>
       {casts &&
         casts.map(cast => (
-          <li key={cast.id}>
+          <li key={cast.id} className={s.item}>
             <img
+              className={s.photo}
               src={
                 cast.profile_path
                   ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
@@ -28,23 +30,10 @@ export default function Cast() {
               }
               alt={cast.name}
             />
-            <h2>{cast.name}</h2>
-            <p>{cast.character}</p>
+            <h2 className={s.name}>{cast.name}</h2>
+            <p className={s.character}>{cast.character}</p>
           </li>
         ))}
-      {/* {casts.map(cast => {
-        <li key={cast.id}>
-          <img
-            src={
-              cast.profile_path
-                ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
-                : 'noImageFound'
-            }
-          />
-          <h2>{cast.name}</h2>
-          <p>{cast.character}</p>
-        </li>;
-      })} */}
     </ul>
   );
 }
