@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import slugify from 'slugify';
-
+import s from '../HomePage/HomePage.module.css';
 import Searchbar from '../../Components/Searchbar/Searchbar';
 import * as apiService from '../../services/films-api';
+import notFoundImg from '../../img/notFound.png';
+import Loader from '../../Components/Loader/Loader';
+import ErrorView from '../../Components/ErrorView/ErrorView';
 
 const Status = {
   IDLE: 'idle',
@@ -17,7 +20,7 @@ export default function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [error, setError] = useState(null);
   const [status, setStatus] = useState(Status.IDLE);
-  const makeSlug = string => slugify(string, { lower: true });
+  // const makeSlug = string => slugify(string, { lower: true });
 
   const { url } = useRouteMatch();
 
@@ -30,8 +33,7 @@ export default function MoviesPage() {
       .getFilmsBySearchQuery(searchQuery)
       .then(({ results }) => {
         if (results.length === 0) {
-          alert('hkjhkh');
-          // setError(`No results were found for ${query}!`);
+          setError(`No results were found for ${searchQuery}!`);
           setStatus(Status.REJECTED);
           return;
         }
@@ -49,7 +51,6 @@ export default function MoviesPage() {
       return;
     }
     setSearchQuery(newQuery);
-    // setMovies(null);
     setError(null);
     setStatus(Status.IDLE);
   };
@@ -57,29 +58,27 @@ export default function MoviesPage() {
   return (
     <>
       <Searchbar onSubmit={onChangeQuery} />
-      {status === Status.PENDING && <p>Waiting</p>}
-      {status === Status.REJECTED && <p>Rejected</p>}
+      {status === Status.PENDING && <Loader />}
+      {status === Status.REJECTED && <ErrorView message={error} />}
       {status === Status.RESOLVED && (
-        <>
-          <ul>
-            {movies.map(movie => (
-              <li key={movie.id}>
-                <Link to={`${url}/${movie.id}`}>
-                  <img
-                    // className={s.movieGalleryItemImage}
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                        : 'noImageFound'
-                    }
-                    alt={movie.title}
-                  />
-                  <p>{movie.title}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </>
+        <ul className={s.movieGallery}>
+          {movies.map(movie => (
+            <li key={movie.id} className={s.movieGalleryItem}>
+              <Link to={`${url}/${movie.id}`}>
+                <img
+                  className={s.movieGalleryItemImage}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : notFoundImg
+                  }
+                  alt={movie.title}
+                />
+                <p className={s.movieTitle}>{movie.title}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );
