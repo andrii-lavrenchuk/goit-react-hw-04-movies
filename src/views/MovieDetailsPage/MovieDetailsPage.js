@@ -6,8 +6,10 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+// import errorImg from './error.jpg';
 import * as apiService from '../../services/films-api';
-import s from '../../Components/Navigation/Navigation.module.css';
+// import s from '../../Components/Navigation/Navigation.module.css';
+import s from './MovieDetailsPage.module.css';
 import Cast from '../Cast/Cast';
 import Reviews from '../Reviews/Reviews';
 
@@ -35,36 +37,38 @@ export default function MovieDetailsPage() {
     <>
       {movie && (
         <>
-          <div>
-            <img src={movie.src} alt={movie.title} />
-            <div>
-              <h2>{movie.title}</h2>
-              <h3>User Score</h3>
+          <div className={s.wrapper}>
+            <img className={s.poster} src={movie.src} alt={movie.title} />
+            <div className={s.description}>
+              <h2 className={s.movieTitle}>{movie.title}</h2>
+              <h3 className={s.movieScore}>User Score</h3>
               <p>{movie.score}</p>
-              <h3>Overview</h3>
+              <h3 className={s.movieOverview}>Overview</h3>
               <p>{movie.overview}</p>
-              <h3>Genres</h3>
+              <h3 className={s.movieGenres}>Genres</h3>
               <ul>
                 {movie.genres.map(genre => (
                   <li key={genre.id}>{genre.name}</li>
                 ))}
               </ul>
-              <NavLink
-                to={`${url}/cast`}
-                className={s.link}
-                activeClassName={s.activeLink}
-              >
-                Cast
-              </NavLink>
-              <NavLink
-                to={`${url}/reviews`}
-                className={s.link}
-                activeClassName={s.activeLink}
-              >
-                Reviews
-              </NavLink>
             </div>
           </div>
+          <nav className={s.linkNav}>
+            <NavLink
+              to={`${url}/cast`}
+              className={s.link}
+              activeClassName={s.activeLink}
+            >
+              Cast
+            </NavLink>
+            <NavLink
+              to={`${url}/reviews`}
+              className={s.link}
+              activeClassName={s.activeLink}
+            >
+              Reviews
+            </NavLink>
+          </nav>
           <Switch>
             <Route path={`${path}/cast`}>
               <Cast />
