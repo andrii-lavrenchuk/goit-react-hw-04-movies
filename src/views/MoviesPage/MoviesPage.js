@@ -22,14 +22,19 @@ export default function MoviesPage() {
   const { url } = useRouteMatch();
 
   useEffect(() => {
-    if (!searchQuery) {
-      return;
-    }
+    if (!searchQuery) return;
+
     setStatus(Status.PENDING);
 
     apiService
       .getFilmsBySearchQuery(searchQuery)
       .then(({ results }) => {
+        if (results.length === 0) {
+          alert('hkjhkh');
+          // setError(`No results were found for ${query}!`);
+          setStatus(Status.REJECTED);
+          return;
+        }
         setMovies(results);
         setStatus(Status.RESOLVED);
       })
@@ -39,14 +44,14 @@ export default function MoviesPage() {
       });
   }, [searchQuery]);
 
-  const onChangeQuery = query => {
-    if (searchQuery === query) {
+  const onChangeQuery = newQuery => {
+    if (searchQuery === newQuery) {
       return;
     }
-    setSearchQuery(query);
-    setMovies(null);
+    setSearchQuery(newQuery);
+    // setMovies(null);
     setError(null);
-    // setStatus(Status.IDLE);
+    setStatus(Status.IDLE);
   };
 
   return (
