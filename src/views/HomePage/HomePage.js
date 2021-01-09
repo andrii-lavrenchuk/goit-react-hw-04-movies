@@ -26,6 +26,7 @@ export default function HomePage() {
 
   return (
     <>
+      <h2 className={s.title}>Trending today</h2>
       <ul className={s.movieGallery}>
         {movies &&
           movies.map(movie => (
@@ -40,7 +41,7 @@ export default function HomePage() {
                   }
                   alt={movie.title}
                 />
-                <p>{movie.title}</p>
+                <p className={s.movieTitle}>{movie.title}</p>
               </Link>
             </li>
           ))}
