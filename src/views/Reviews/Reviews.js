@@ -26,6 +26,7 @@ export default function Reviews() {
       .then(({ results }) => {
         if (results.length === 0) {
           toast.error('There are no reviews for this movie ');
+          setStatus(Status.IDLE);
           return;
         }
         setReviews(results);
