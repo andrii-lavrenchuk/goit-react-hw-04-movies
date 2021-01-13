@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import {
   useParams,
   NavLink,
@@ -9,10 +9,16 @@ import {
 import notFoundImg from '../../img/notFound.png';
 import * as apiService from '../../services/films-api';
 import s from './MovieDetailsPage.module.css';
-import Cast from '../Cast/Cast';
-import Reviews from '../Reviews/Reviews';
+
 import ErrorView from '../../Components/ErrorView/ErrorView';
 import Loader from '../../Components/Loader/Loader';
+
+const Cast = lazy(() =>
+  import('../Cast/Cast' /* webpackChunkName: "cast-page" */),
+);
+const Reviews = lazy(() =>
+  import('../Reviews/Reviews' /* webpackChunkName: "reviews-page" */),
+);
 
 const Status = {
   IDLE: 'idle',
@@ -89,15 +95,17 @@ export default function MovieDetailsPage() {
               Reviews
             </NavLink>
           </nav>
-          <Switch>
-            <Route path={`${path}/cast`}>
-              <Cast />
-            </Route>
+          <Suspense fallback={<Loader />}>
+            <Switch>
+              <Route path={`${path}/cast`}>
+                <Cast />
+              </Route>
 
-            <Route path={`${path}/reviews`}>
-              <Reviews />
-            </Route>
-          </Switch>
+              <Route path={`${path}/reviews`}>
+                <Reviews />
+              </Route>
+            </Switch>
+          </Suspense>
         </>
       )}
     </>
